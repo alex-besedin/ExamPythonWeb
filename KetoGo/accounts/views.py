@@ -39,7 +39,7 @@ class DetailsUserView(mixins.LoginRequiredMixin, generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        #
+
         #     #  this will make n+1 DB requests... not good!
         #     photos = self.object.photo_set.all()
         #     #  this will make 2 DB requests
@@ -48,11 +48,11 @@ class DetailsUserView(mixins.LoginRequiredMixin, generic.DetailView):
         #     context['pets_count'] = self.object.pet_set.count()
         #     context['photos'] = self.object.photo_set.all()
         #     context['likes_count'] = sum(photo.photolike_set.count() for photo in photos)
-        #     context['is_owner'] = self.request.user == self.object
+        context['pk'] = self.request.user.pk
+        context['is_owner'] = self.request.user == self.object
         #     # self.object is the selected user by primary key(the owner of the profile viewed)
         #     # self.request.user is the logged user(the viewer that is browsing the profile)
-        #     # context['photos_count'] = self.object.
-        #
+        context['full_name'] = self.object.get_full_name()
         return context
 
 

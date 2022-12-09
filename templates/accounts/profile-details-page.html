@@ -2,10 +2,8 @@
 {% load static %}
 {% block page_content %}
 
-    <!-- check if current user has profile -->
     <!-- Start Profile Details Section -->
     <div class="profile">
-
         <!-- Start Profile Personal Data Section -->
         <div class="profile-data">
             <div class="profile_img">
@@ -24,22 +22,23 @@
             <div class="personal">
                 <div class="edit">
                     <!-- User Username -->
-                    <p>{{ object.first_name }} {{ object.last_name }}</p>
+{#                    <p>{{ object.first_name }} {{ object.last_name }}</p>#}
+                    <p>{{ full_name }}</p>
 
                     <!-- IF the viewer is the owner of the profile -->
                     <!-- Link to Edit Profile Page -->
-                    {% if object.user == request.user %}
-                        <a href="{% url 'edit user' pk=object.user_id %}">
+                    {% if is_owner %}
+                        <a href="{% url 'edit user' pk=request.user.pk %}">
                             <img class="edit-img"
                                  src="{% static 'images/edit-pen-icon-6.jpg' %}"
-                                 alt="edit button">
+                                 alt="edit">
                         </a>
 
                         <!-- Link to Delete Profile Page -->
-                        <a href="{% url 'delete user' pk=object.user_id %}">
+                        <a href="{% url 'delete user' pk=request.user.pk %}">
                             <img class="bin-img"
                                  src="{% static 'images/icon-remove-22.jpg' %}"
-                                 alt="bin button">
+                                 alt="delete">
                         </a>
                         <!-- End IF the viewer is the owner of the profile -->
                     {% endif %}
@@ -49,7 +48,7 @@
                 </div>
             Joined on:
                 <div>
-                    {{ object.user.date_joined }}
+                    {{ object.date_joined }}
                 </div>
 
 {##}

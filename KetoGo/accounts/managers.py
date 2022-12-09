@@ -1,5 +1,3 @@
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
-from django.db import models
 from django.contrib.auth import base_user
 from django.contrib.auth.hashers import make_password
 from django.utils import timezone
@@ -26,6 +24,7 @@ class AppUserManager(base_user.BaseUserManager):
             **extra_fields
         )
         user.password = make_password(password)
+        # user.set_password(password)
         user.save(using=self._db)
         return user
 
