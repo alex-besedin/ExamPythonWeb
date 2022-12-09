@@ -1,0 +1,23 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block page_content %}
+
+    <!-- 404 page -->
+    <div class="not-found-img">
+        <img src="{% static 'images/404.gif' %}" alt="{% static 'images/zillow-404-page-5f3ed6a6abaa5.gif' %}">
+    </div>
+
+    <div class="not-found">
+        <h1>
+            Sorry, bro,<br> there's nothing here for ya...
+        </h1>
+
+        <h3>Error 404 - page not found.</h3>
+        <!-- Link to Home Page -->
+        <a href="{%  url 'index' %}">
+            <button>Return to KetoGo</button>
+        </a>
+    </div>
+    <!-- End 404 page -->
+
+{% endblock %}

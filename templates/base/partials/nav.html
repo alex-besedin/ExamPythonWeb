@@ -1,0 +1,78 @@
+{% load static %}
+<nav class="navbar">
+    <div class="container">
+        <div class="logo">
+            <!-- Link to Home Page -->
+            {#            <a href="{% url 'index' %}">#}
+            {#                <img width="50px"#}
+            {#                     src="{% static 'images/KetoGo Stamp.png' %}"#}
+            {#                     alt="img1">#}
+            {#            </a>#}
+
+            <!-- Link to Home Page -->
+            <a class="logo" href="{% url 'index' %}">
+                <img width="150px"
+                     src="{% static 'images/KetoGo logo.png' %}"
+                     alt="img1">
+            </a>
+        </div>
+
+        <div class="nav-links">
+            <ul class="nav-group">
+                <i class="nav-item"> Your trip to the healthy lifestyle</i>
+
+                {#                <li class="nav-item">#}
+                {#                    <!-- Link to Add Pet Page -->#}
+                {#                    <a href="{% url 'add pet' %}">#}
+                {#                        <i>Add Pet</i>#}
+                {#                    </a>#}
+                {#                </li>#}
+                {##}
+                {#                <li class="nav-item">#}
+                {#                    <!-- Link to Add Photo Page -->#}
+                {#                    <a href="{% url 'add photo' %}">#}
+                {#                        <i>Add Photo</i>#}
+                {#                    </a>#}
+                {#                </li>#}
+
+
+                {#                <li class="nav-item">#}
+                {#                    <!-- Link to Menu Page -->#}
+                {#                    <a href="{% url 'menu' %}">#}
+                {#                        <i>Menu</i>#}
+                {#                    </a>#}
+                {#                </li>#}
+
+                {% if request.user.is_authenticated %}
+                    <li class="nav-item">
+                        <!-- Link to Profile Page -->
+                        <a href="{% url 'details user' pk=request.user.pk %}">
+                            <i>Profile</i>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <!-- Link to Log out -->
+                        <a href="{% url 'logout user' %}">
+                            <i>Log out</i>
+                        </a>
+                    </li>
+
+                {% else %}
+                    <li class="nav-item">
+                        <!-- Link to Login Page -->
+                        <a href="{% url 'login user' %}">
+                            <i>Login</i>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <!-- Link to Register Page -->
+                        <a href="{% url 'register user' %}">
+                            <i>Register</i>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>

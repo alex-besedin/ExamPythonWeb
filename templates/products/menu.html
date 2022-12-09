@@ -1,0 +1,47 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block page_content %}
+    <div class="container">
+        <div class="col-9">
+
+            <!-- Start Searchbar Form -->
+            {#            <form class="searchbar" method="get" action="{% url 'index' %}">#}
+            {#                {{ search_form }}#}
+            {#                {% csrf_token %}#}
+            {#                <input type="text" placeholder="Search by pet name...">#}
+            {#                <button>#}
+            {#                    <img src="{% static 'images/search.png' %}"#}
+            {#                         height="18"#}
+            {#                         alt="img2">#}
+            {#                </button>#}
+            {#            </form>#}
+            <!-- End Searchbar Form -->
+
+            <!-- Start Pet Photos Post Section -->
+            {#            {% for photo in photos %}#}
+            {#                {% include 'base/partials/photo-item.html' with photo=photo %}#}
+            {#            {% endfor %}#}
+            <!-- End Pet Photos Post Section -->
+            {% if request.user.is_authenticated %}
+                <div>Hello, {{ request.user.to_profile.first_name }}!</div>
+            {% endif %}
+
+            {% for cat in categories %}
+                <p>
+                    <p><strong autocapitalize="">Choose your {{ cat }}:</strong></p>
+                    {% for product in object_list %}
+                        {% if product.category == cat %}
+                            <a href="{% url 'details product' pk=product.pk %}">
+                                <img src="/media/{{ product.product_photo }}"
+                                     alt="image of {{ product.name }}"
+                                     width="192" height="144">
+                                <p>{{ product.name }}</p>
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+                </p>
+            {% endfor %}
+        </div>
+    </div>
+
+{% endblock %}
