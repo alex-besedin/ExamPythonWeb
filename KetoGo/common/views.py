@@ -5,6 +5,23 @@ UserModel = get_user_model()
 
 
 def index(request):
+    # search_form = SearchPhotoForm(request.GET)
+    # search_string = None
+    # if search_form.is_valid():
+    #     search_string = search_form.cleaned_data['pet_name']
+
+    # photos = Photo.objects.all()
+    # if search_string:
+    #     photos = photos.filter(tagged_pets__name__icontains=search_string)
+    # photos = [apply_likes_count(photo) for photo in photos]
+    # photos = [apply_user_liked_photos(photo) for photo in photos]
+
+    # context = {
+    #     'photos': photos,
+    #     # 'comment_form': PhotoCommentForm(),
+    #     'search_form': search_form,
+    # }
+    # return render(request, 'common/home-page.html', context,)
     return render(request, 'common/home-page.html')
 
 # def get_profile():
