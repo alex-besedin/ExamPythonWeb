@@ -16,10 +16,8 @@ def index(request):
 
 
 def menu(request):
-    search_form = SearchProductForm(request.GET)
+    search_form = SearchProductForm()
     products = Product.objects.all()
-
-    print([p.name for p in products])
 
     context = {
         'search_form': search_form,
@@ -27,7 +25,7 @@ def menu(request):
         'categories': [
             'salad',
             'sandwich',
-            'shaffle',
+            'chaffle',
             'dessert',
         ],
     }
@@ -36,31 +34,29 @@ def menu(request):
 
 
 def search(request):
-    search_form = SearchProductForm(request.GET)
+    search_results = []
     search_string = None
-    search_results = ()
 
     if request.method == "GET":
-        search_string = request.GET.get('SearchProductForm')
+        search_string = request.GET.get('search')
+
         if search_string == '':
             search_string = 'None'
-
-        if not search_string:
-            search_results = Product.objects.all().order_by("category")
         else:
             # Use & (AND) operator to search for more than 2 fields.
             # Use | (OR) operator to search for only one field.
-            search_results = Product.objects.filter(
+            search_results = Product.objects.all().filter(
                 Q(category__icontains=search_string) |
                 Q(description__icontains=search_string) |
                 Q(name__icontains=search_string)
             )
+
     search_results = [apply_likes_count(search_result) for search_result in search_results]
 
     context = {
         'products': search_results,
         'search_string': search_string,
-        'search_form': search_form,
+        'products_count': len(search_results),
     }
     return render(request, 'common/search.html', context)
 
@@ -98,6 +94,3 @@ def comment_product(request, product_id):
         comment.save()
 
     return redirect('details product', pk=product_id)
-
-
-

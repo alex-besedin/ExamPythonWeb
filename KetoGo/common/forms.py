@@ -19,7 +19,7 @@ class ProductCommentForm(forms.ModelForm):
 
 
 class SearchProductForm(forms.Form):
-    search_field = forms.CharField(
+    search = forms.CharField(
         max_length=50,
         required=False,
         widget=forms.TextInput(

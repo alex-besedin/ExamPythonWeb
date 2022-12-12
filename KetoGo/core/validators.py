@@ -6,10 +6,10 @@ def mb_to_bytes(mb):
 
 
 def validate_image_less_than_5mb(image_obj):
-    filesize = image_obj.file.size
+    filesize = image_obj.size
     megabyte_limit = 5.0
     if filesize > mb_to_bytes(megabyte_limit):
-        raise ValidationError(f"Max file size is {megabyte_limit}MB")
+        raise ValidationError(f"Maximum file size is {megabyte_limit}MB")
 
 
 def name_alphabetic_validator(value):

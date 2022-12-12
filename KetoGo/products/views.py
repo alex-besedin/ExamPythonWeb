@@ -37,6 +37,7 @@ class DetailsProductView(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
+        comment_form = ProductCommentForm()
         product = self.object
         user = self.request.user
 
@@ -45,6 +46,6 @@ class DetailsProductView(generic.DetailView):
         comments_for_product = product.productcomment_set.all()
 
         context['comments'] = comments_for_product
-        context['comment_form'] = ProductCommentForm(),
+        context['comment_form'] = comment_form
 
         return context
