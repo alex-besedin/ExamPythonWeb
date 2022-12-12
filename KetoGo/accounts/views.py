@@ -1,11 +1,10 @@
-from django.shortcuts import render, redirect
-
-# from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth import views as auth_views, login, get_user_model, mixins
 from django.urls import reverse_lazy
 from django.views import generic
 
 from KetoGo.accounts.forms import RegisterUserForm
+from KetoGo.core.product_utils import apply_product_is_liked_or_not_by_user
+from KetoGo.products.models import Product
 
 UserModel = get_user_model()
 
@@ -25,8 +24,6 @@ class RegisterUserView(generic.CreateView):
 
 class LoginUserView(auth_views.LoginView):
     template_name = 'auth/login.html'
-    # success_url = reverse_lazy('index')
-    # redirect_field_name = 'index'
 
 
 class LogoutUserView(auth_views.LogoutView):
@@ -40,19 +37,14 @@ class DetailsUserView(mixins.LoginRequiredMixin, generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        #     #  this will make n+1 DB requests... not good!
-        #     photos = self.object.photo_set.all()
-        #     #  this will make 2 DB requests
-        #     photos = self.object.photo_set.prefetch_related('photolike_set')
-        #
-        #     context['pets_count'] = self.object.pet_set.count()
-        #     context['photos'] = self.object.photo_set.all()
-        #     context['likes_count'] = sum(photo.photolike_set.count() for photo in photos)
-        context['pk'] = self.request.user.pk
+        products = [apply_product_is_liked_or_not_by_user(product, self.object) for product in Product.objects.all()]
+        favourites = [product for product in products if product.is_liked_by_user]
+
         context['is_owner'] = self.request.user == self.object
         #     # self.object is the selected user by primary key(the owner of the profile viewed)
         #     # self.request.user is the logged user(the viewer that is browsing the profile)
         context['full_name'] = self.object.get_full_name()
+        context['favourites'] = favourites
         return context
 
 

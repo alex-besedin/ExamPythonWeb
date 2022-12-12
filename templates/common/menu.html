@@ -1,0 +1,34 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block page_content %}
+    <div class="container">
+        <div class="col-9">
+            <!-- Start Searchbar Form -->
+            <form class="searchbar" method="get" action="{% url 'search' %}">
+                {{ search_form }}
+                {% csrf_token %}
+                <label>
+                    <input type="text" placeholder="Search in our menu...">
+                </label>
+                <button>
+                    <img src="{% static 'images/search.png' %}"
+                         height="18"
+                         alt="img2">
+                </button>
+            </form>
+            <!-- End Searchbar Form -->
+            <!-- Start Products List -->
+            {% for category in categories %}
+                    <p><strong>Choose your {{ category }}:</strong></p>
+
+                {% for product in products %}
+                        {% if category == product.category %}
+                            {% include 'base/partials/product item for listing.html' with product=product %}
+                        {% endif %}
+                {% endfor %}
+
+            {% endfor %}
+            <!-- End Products List -->
+        </div>
+    </div>
+{% endblock %}

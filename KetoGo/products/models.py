@@ -25,6 +25,7 @@ class Product(StrFromFieldMixin, models.Model):
         max_length=PRODUCT_NAME_MAX_LENGTH,
         blank=False,
         null=False,
+        unique=True,
     )
     category = models.CharField(
         choices=CategoryChoice.choices(),
@@ -32,13 +33,9 @@ class Product(StrFromFieldMixin, models.Model):
     )
     product_photo = models.ImageField(
         upload_to='product_photos/',
-        null=False,
-        blank=True,
     )
-    description = models.CharField(
+    description = models.TextField(
         max_length=MAX_DESCRIPTION_LENGTH,
-        null=True,
-        blank=True,
         validators=(
             MinLengthValidator(MIN_DESCRIPTION_LENGTH),
         )

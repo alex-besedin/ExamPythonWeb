@@ -1,34 +1,33 @@
+from django.contrib.auth import mixins
+
+from django.urls import reverse_lazy
 from django.views import generic
 
+from KetoGo.common.forms import ProductCommentForm
+from KetoGo.core.product_utils import apply_likes_count, apply_product_is_liked_or_not_by_user
+from KetoGo.products.forms import ProductCreateForm, ProductEditForm, ProductDeleteForm
 from KetoGo.products.models import Product
 
 
-class ProductsListView(generic.ListView):
+class AddProductView(mixins.LoginRequiredMixin, generic.CreateView):
+    # model = Product
+    template_name = 'products/add product.html'
+    form_class = ProductCreateForm
+    success_url = reverse_lazy('menu')
+
+
+class EditProductView(mixins.LoginRequiredMixin, generic.UpdateView):
     model = Product
-    categories = ('salad', 'sandwich', 'chaffle', 'dessert')
-    # categories = [x for x in dir(CategoryChoice) if x.isalpha()]
-    template_name = 'products/menu.html'
-
-    # paginate_by = 4
-
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
-        context['categories'] = self.categories
-        context['user'] = self.request.user
-
-        return context
+    template_name = 'products/edit product.html'
+    form_class = ProductEditForm
+    success_url = reverse_lazy('menu')
 
 
-class AddProductView(generic.CreateView):
-    pass
-
-
-class EditProductView(generic.UpdateView):
-    pass
-
-
-class DeleteProductView(generic.DeleteView):
-    pass
+class DeleteProductView(mixins.LoginRequiredMixin, generic.DeleteView):
+    model = Product
+    template_name = 'products/delete product.html'
+    form_class = ProductDeleteForm
+    success_url = reverse_lazy('menu')
 
 
 class DetailsProductView(generic.DetailView):
@@ -37,19 +36,15 @@ class DetailsProductView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        #
-        #     #  this will make n+1 DB requests... not good!
-        #     photos = self.object.photo_set.all()
-        #     #  this will make 2 DB requests
-        #     photos = self.object.photo_set.prefetch_related('photolike_set')
-        #
-        #     context['pets_count'] = self.object.pet_set.count()
-        #     context['photos'] = self.object.photo_set.all()
-        #     context['likes_count'] = sum(photo.photolike_set.count() for photo in photos)
-        #     context['is_owner'] = self.request.user == self.object
-        #     # self.object is the selected user by primary key(the owner of the profile viewed)
-        #     # self.request.user is the logged user(the viewer that is browsing the profile)
-        #     # context['photos_count'] = self.object.
-        #
-        return context
 
+        product = self.object
+        user = self.request.user
+
+        apply_likes_count(product)
+        apply_product_is_liked_or_not_by_user(product, user)
+        comments_for_product = product.productcomment_set.all()
+
+        context['comments'] = comments_for_product
+        context['comment_form'] = ProductCommentForm(),
+
+        return context

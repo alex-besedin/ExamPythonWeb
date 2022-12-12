@@ -9,23 +9,21 @@ class ProductBaseForm(forms.ModelForm):
         fields = ('name', 'category', 'product_photo', 'description')  # the order should be as we want it to be seen
         labels = {
             'name': 'Product Name',
-            'category': 'Product Category',
-            'product_photo': 'Link to Product Image',
-            'description': 'Product Description',
+            'category': 'Category',
+            'product_photo': 'Link to Image',
+            'description': 'Description',
         }
 
 
 class ProductCreateForm(ProductBaseForm):
     pass
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
 
 
 class ProductEditForm(ProductBaseForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-    class Meta:
-        model = Product
-        fields = ('name', 'category', 'product_photo', 'description')
 
 
 class ProductDeleteForm(ProductBaseForm):

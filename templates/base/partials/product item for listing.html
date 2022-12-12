@@ -1,0 +1,18 @@
+<div><strong>{{ product.name }}</strong></div>
+<div>
+    <!-- Number of Likes for Product -->
+    {% with product.productlike_set.count as total_likes %}
+        <p class="likes">This {{ product.category }} is a favourite for {{ total_likes }}
+            user{{ total_likes|pluralize }}</p>
+    {% endwith %}
+</div>
+<!-- Start Product Photo -->
+<div>
+    <a href="{% url 'details product' pk=product.pk %}">
+        <img src="/media/{{ product.product_photo }}"
+             alt="image of {{ product.name }}"
+             width="192" height="144">
+        <p>More details for {{ product.name }}...</p>
+    </a>
+</div>
+<!-- End Product Photo -->

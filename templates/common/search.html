@@ -1,0 +1,36 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% block page_content %}
+
+    <div class="container">
+        <div class="col-9">
+
+            <div>
+                {% if search_string %}
+                    <p>Search Results:</p>
+                    <h2>
+                        {% with products.count as total_results %}
+                            Found {{ total_results }} result{{ total_results|pluralize }}
+                        {% endwith %}
+                    </h2>
+
+                    {% for result in products %}
+                         {{forloop.counter}}. {% include 'base/partials/product item for listing.html' with product=product %}
+{#                        <h3>{{ result.name }} - {{ result.category }}</h3>#}
+
+                    {% empty %}
+                        <h3>No results found.</h3>
+                    {% endfor %}
+                {% else %}
+                    No search string provided.
+                {% endif %}
+
+                <form action="{% url 'menu' %}" class="form-inline" method="get">
+                    <button type="submit" class="btn btn-primary btn-lg mb-2">Back to menu</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}

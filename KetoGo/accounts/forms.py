@@ -56,10 +56,6 @@ class RegisterUserForm(auth_forms.UserCreationForm):
         ),
     )
 
-    # def __init__(self, *args, **kwargs):
-    #     super(RegisterUserForm, self).__init__(*args, **kwargs)
-    #     del self.fields['username']
-
     class Meta:
         model = UserModel
         fields = (UserModel.USERNAME_FIELD, 'password1', 'password2', 'first_name', 'last_name', 'avatar', 'age',)

@@ -51,18 +51,17 @@
                     {{ object.date_joined }}
                 </div>
 
-{##}
-{#                    <!-- Total Number of Photos by the User -->#}
-{#                    <span>{{ photos.count }}</span>#}
-{#                    <p>photos</p>#}
-{##}
-{#                    <!-- Total Number of Pets owned by the User -->#}
-{#                    <span>{{ pets_count }}</span>#}
-{#                    <p>pets</p>#}
-{##}
-{#                    <!-- Total Number of Likes for the User -->#}
-{#                    <span>{{ likes_count }}</span>#}
-{#                    <p>likes</p>#}
+
+                <!-- List of liked products -->
+            {% if favourites %}
+                <p>Favourite products:</p>
+                {% for product in favourites %}
+                    {% include 'base/partials/product item for listing.html' with product=product %}
+                {% endfor %}
+            {% else %}
+                No favourite products yet.
+            {% endif %}
+
 
             </div>
         </div>

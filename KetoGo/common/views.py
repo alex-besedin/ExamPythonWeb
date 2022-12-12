@@ -1,84 +1,103 @@
 from django.contrib.auth import mixins, get_user_model
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+
+from KetoGo.common.forms import SearchProductForm, ProductCommentForm
+from KetoGo.common.models import ProductLike
+from KetoGo.core.product_utils import apply_likes_count, apply_product_is_liked_or_not_by_user
+from KetoGo.products.models import Product
+from django.db.models import Q
 
 UserModel = get_user_model()
 
 
 def index(request):
-    # search_form = SearchPhotoForm(request.GET)
-    # search_string = None
-    # if search_form.is_valid():
-    #     search_string = search_form.cleaned_data['pet_name']
-
-    # photos = Photo.objects.all()
-    # if search_string:
-    #     photos = photos.filter(tagged_pets__name__icontains=search_string)
-    # photos = [apply_likes_count(photo) for photo in photos]
-    # photos = [apply_user_liked_photos(photo) for photo in photos]
-
-    # context = {
-    #     'photos': photos,
-    #     # 'comment_form': PhotoCommentForm(),
-    #     'search_form': search_form,
-    # }
-    # return render(request, 'common/home-page.html', context,)
     return render(request, 'common/home-page.html')
 
-# def get_profile():
-#     try:
-#         profile = Profile.objects.get()
-#         return profile
-#     except Profile.DoesNotExist as ex:
-#         return None
+
+def menu(request):
+    search_form = SearchProductForm(request.GET)
+    products = Product.objects.all()
+
+    print([p.name for p in products])
+
+    context = {
+        'search_form': search_form,
+        'products': products,
+        'categories': [
+            'salad',
+            'sandwich',
+            'shaffle',
+            'dessert',
+        ],
+    }
+
+    return render(request, 'common/menu.html', context)
 
 
-# def index(request):
-# profile = get_profile()
-# print(profile)
-# if profile is None:
-#     return redirect('accounts/profile-edit-page', pk=request.user.pk)
+def search(request):
+    search_form = SearchProductForm(request.GET)
+    search_string = None
+    search_results = ()
 
-# context = {
-#     'profile': profile,
-# }
+    if request.method == "GET":
+        search_string = request.GET.get('SearchProductForm')
+        if search_string == '':
+            search_string = 'None'
 
-# return render(request, 'common/home-page.html')
+        if not search_string:
+            search_results = Product.objects.all().order_by("category")
+        else:
+            # Use & (AND) operator to search for more than 2 fields.
+            # Use | (OR) operator to search for only one field.
+            search_results = Product.objects.filter(
+                Q(category__icontains=search_string) |
+                Q(description__icontains=search_string) |
+                Q(name__icontains=search_string)
+            )
+    search_results = [apply_likes_count(search_result) for search_result in search_results]
+
+    context = {
+        'products': search_results,
+        'search_string': search_string,
+        'search_form': search_form,
+    }
+    return render(request, 'common/search.html', context)
 
 
-# class UsersListView(generic.ListView):
-#     model = UserModel
-#     template_name = 'common/home-page.html'
-#
-#     def get_context_data(self, *args, **kwargs):
-#         context = super().get_context_data(*args, **kwargs)
-#
-#         context['user'] = self.request.user
-#         # context['has_email'] = UserModel.has_email(self.request.user)
-#
-#         return context
+@login_required
+def like_product(request, product_id):
+    product_is_liked_by_user = ProductLike.objects.filter(
+        to_product_id=product_id,
+        to_user_id=request.user.pk
+    )
+
+    if product_is_liked_by_user:
+        product_is_liked_by_user.delete()
+
+    else:
+        ProductLike.objects.create(
+            to_product_id=product_id,
+            to_user_id=request.user.pk,
+        )
+
+    redirect_path = request.META['HTTP_REFERER']
+
+    return redirect(redirect_path)
 
 
-# def index(request):
-# when still no users:
-# search_form = SearchPhotoForm(request.GET)
-# search_string = None
-# if search_form.is_valid():
-#     search_string = search_form.cleaned_data['pet_name']
+@login_required
+def comment_product(request, product_id):
+    product = Product.objects.filter(pk=product_id).get()
 
-# photos = Photo.objects.all()
-# if search_string:
-#     photos = photos.filter(tagged_pets__name__icontains=search_string)
-# photos = [apply_likes_count(photo) for photo in photos]
-# photos = [apply_user_liked_photos(photo) for photo in photos]
+    form = ProductCommentForm(request.POST)
+    if form.is_valid():
+        comment = form.save(commit=False)  # Does not save to DB yet
+        comment.to_product = product
+        comment.to_user = request.user
+        comment.save()
 
-# context = {
-#     'photos': photos,
-#     # 'comment_form': PhotoCommentForm(),
-#     'search_form': search_form,
-# }
+    return redirect('details product', pk=product_id)
 
-# return render(
-#     request,
-#     'common/home-page.html',
-#     # context,
-# )
+
+
