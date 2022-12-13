@@ -7,6 +7,8 @@ from KetoGo.common.models import ProductComment
 class ProductCommentAdmin(admin.ModelAdmin):
     list_display = ('get_user_name', 'get_product', 'date_and_time_of_publication')
     list_filter = ('to_product__category', 'to_product__name',)
+    search_fields = ('comment_text',)
+    search_help_text = 'Search comments containing an offensive word...'
 
     fieldsets = (
         (None, {'fields': ('comment_text',)}),

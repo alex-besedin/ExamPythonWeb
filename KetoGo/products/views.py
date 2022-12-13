@@ -10,7 +10,6 @@ from KetoGo.products.models import Product
 
 
 class AddProductView(mixins.LoginRequiredMixin, generic.CreateView):
-    # model = Product
     template_name = 'products/add product.html'
     form_class = CreateProductForm
     success_url = reverse_lazy('menu')
@@ -19,7 +18,6 @@ class AddProductView(mixins.LoginRequiredMixin, generic.CreateView):
 class EditProductView(mixins.LoginRequiredMixin, generic.UpdateView):
     model = Product
     template_name = 'products/edit product.html'
-    # fields = ('name', 'category', 'product_photo', 'description',)
     form_class = EditProductForm
 
     def get_success_url(self):
@@ -29,7 +27,6 @@ class EditProductView(mixins.LoginRequiredMixin, generic.UpdateView):
 class DeleteProductView(mixins.LoginRequiredMixin, generic.DeleteView):
     model = Product
     template_name = 'products/delete product.html'
-    # form_class = DeleteProductForm
     success_url = reverse_lazy('menu')
 
 

@@ -9,4 +9,4 @@ class ProductAdmin(admin.ModelAdmin):
     list_filter = ('category',)
     search_fields = ('name',)
     search_help_text = 'Search product by name...'
-    # ordering = ('name', 'category',)
+    ordering = ('category', 'name',)
