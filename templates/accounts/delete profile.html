@@ -3,21 +3,29 @@
 {% block page_content %}
 
     <!-- Start Delete Profile Section -->
-        <div class="delete-profile">
+    <div class="delete-profile">
+        {% if request.user == object or request.user.is_superuser %}
             <h1>
-                Are you sure you want to delete your profile?
+                Are you sure you want to delete this profile?
             </h1>
             <div class="sure-buttons">
-                <form method="post" action="{% url 'delete user' pk=request.user.pk %}">
-                {% csrf_token %}
-                <!-- Yes (Delete Profile) Button -->
-                <button>Yes</button>
-                <!-- Go Back Button -->
-                <a class="edit-btn" href="javascript:history.back()">Go Back</a>
+                <form method="post" action="{% url 'delete user' pk=object.pk %}">
+                    {% csrf_token %}
+                    <!-- Yes (Delete Profile) Button -->
+                    <button>Yes</button>
+                    <!-- Go Back Button -->
+                    <a class="edit-btn" href="javascript:history.back()">Go Back</a>
                 </form>
             </div>
             <img src="{% static 'images/KetoGo-small.jpg' %}" alt="???">
-        </div>
+        {% else %}
+            <strong>You do not have permission to delete this profile.</strong>
+            <div class="sure-buttons">
+                <a class="edit-btn" href="javascript:history.back()">Go Back</a>
+            </div>
+        {% endif %}
+    </div>
+
     <!-- End Delete Profile Section -->
 
 {% endblock %}

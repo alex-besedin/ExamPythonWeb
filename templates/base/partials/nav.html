@@ -13,21 +13,13 @@
         <div class="nav-links">
             <ul class="nav-group">
                 <i class="nav-item"> Your trip to a healthier lifestyle</i>
-                            {% if request.user.is_staff %}
-                                <li class="nav-item">
-                                    <!-- Link to Add Product Page -->
-                                    <a href="{% url 'add product' %}">
-                                        <i>Add Product</i>
-                                    </a>
-                                </li>
-                            {% endif %}
 
-                                <li class="nav-item">
-                                    <!-- Link to Menu Page -->
-                                    <a href="{% url 'menu' %}">
-                                        <i>Our Menu</i>
-                                    </a>
-                                </li>
+                <li class="nav-item">
+                    <!-- Link to Menu Page -->
+                    <a href="{% url 'menu' %}">
+                        <i>Our Menu</i>
+                    </a>
+                </li>
 
                 {% if request.user.is_authenticated %}
                     <li class="nav-item">

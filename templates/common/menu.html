@@ -1,22 +1,35 @@
 {% extends 'base/base.html' %}
 {% load static %}
-{% block page_content %}
-    <div class="container">
-            <div class="col-9">
-                <!-- Start Searchbar Form -->
-                <form class="searchbar" method="get" action="{% url 'search' %}">
-                    {{ search_form }}
-                    {% csrf_token %}
-                    <button type="submit">
-                        <img src="{% static 'images/search.png' %}"
-                             height="18"
-                             alt="img2">
-                    </button>
-                </form>
-            </div>
+{% load custom_filters %}
 
-        <!-- End Searchbar Form -->
-    <div>
+{% block page_content %}
+
+    <div class="container">
+        <div class="col-9">
+            <!-- Start Searchbar Form -->
+            <form class="searchbar" method="get" action="{% url 'search' %}">
+                {{ search_form }}
+                {% csrf_token %}
+                <button type="submit">
+                    <img src="{% static 'images/search.png' %}"
+                         height="18"
+                         alt="img2">
+                </button>
+            </form>
+        </div>
+            <!-- End Searchbar Form -->
+
+            <!-- ADD PRODUCT button if user has permission -->
+        <div class="sure-buttons">
+            {% if request.user|is_in_perm_group:"product editor" or request.user.is_superuser %}
+                    <!-- Link to Add Product Page -->
+                    <a class="edit-btn" href="{% url 'add product' %}">
+                        <i>Add New Product</i>
+                    </a>
+            {% endif %}
+        </div>
+        <!-- End ADD PRODUCT button if user has permission -->
+        <div>
             <!-- Start Products List -->
             {% for category in categories %}
                 <p><strong>Choose your {{ category }}:</strong></p>
@@ -30,7 +43,7 @@
                 {% endfor %}
 
             {% endfor %}
-    </div>
-            <!-- End Products List -->
+        </div>
+        <!-- End Products List -->
     </div>
 {% endblock %}

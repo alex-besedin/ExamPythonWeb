@@ -1,5 +1,6 @@
 {% extends 'base/base.html' %}
 {% load static %}
+{% load custom_filters %}
 {% block page_content %}
 <div class="card">
 
@@ -11,7 +12,7 @@
     </div>
     <div>
         {{ product.name }}
-        {% if request.user.is_authenticated and request.user.is_staff %}
+            {% if request.user|is_in_perm_group:"product editor" or request.user.is_superuser %}
             <a href="{% url 'edit product' pk=product.pk %}">
                 <img class="edit-img"
                      src="{% static 'images/edit-pen-icon-6.jpg' %}"
