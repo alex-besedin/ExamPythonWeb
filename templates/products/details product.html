@@ -9,7 +9,25 @@
              alt="photo of {{ product.name }}"
              class="cover" width="384" height="288">
     </div>
-    <div>{{ product.name }}</div>
+    <div>
+        {{ product.name }}
+        {% if request.user.is_authenticated and request.user.is_staff %}
+            <a href="{% url 'edit product' pk=product.pk %}">
+                <img class="edit-img"
+                     src="{% static 'images/edit-pen-icon-6.jpg' %}"
+                     width="18"
+                     alt="edit">
+            </a>
+
+            <!-- Link to Delete Profile Page -->
+            <a href="{% url 'delete product' pk=product.pk %}">
+                <img class="bin-img"
+                     src="{% static 'images/icon-remove-22.jpg' %}"
+                     width="18"
+                     alt="delete">
+            </a>
+        {% endif %}
+    </div>
     <!-- End Product Photo -->
     <div class="bottom">
         <!-- Start Like Button -->
@@ -19,9 +37,6 @@
                 <span class="heart">
                     <a href="{% url 'like product' product_id=product.pk %}">
                         <!-- if user has liked the product -->
-{#                        {% if product.is_liked_by_user is None %}#}
-{#                            something wrong with apply_product_is_liked_or_not_by_user#}
-{#                        {% endif %}#}
                         {% if product.is_liked_by_user %}
                             <svg style="color: red"
                                  xmlns="http://www.w3.org/2000/svg"
@@ -37,7 +52,7 @@
                                                   fill="red">
 
                                             </path>
-                                        </svg> This product is added to your favourites.
+                                        </svg>
                             <!-- else -->
                         {% else %}
                             <svg aria-label="Like"
@@ -65,6 +80,9 @@
                         {% endif %}
                     </a>
                 </span>
+            {% if product.is_liked_by_user %}
+                This product is added to your favourites.
+            {% endif %}
                 <!-- End Like Button -->
             </div>
         </div>
@@ -94,7 +112,7 @@
                                     <div class="image">
                                         <!-- User Profile Image -->
                                         {% if comment.to_user.avatar %}
-                                            <img src="{{ comment.to_user.avatar }}">
+                                            <img src="{{ comment.to_user.avatar }}" alt="">
                                         {% else %}
                                             <img src="{% static 'images/person.png' %}"
                                                  alt="img8">
@@ -127,11 +145,13 @@
                 </h3>
             </div>
             <!-- Start Add Comments Form -->
+            {% if request.user.is_authenticated %}
             <form method="post" action="{% url 'comment product' product_id=product.pk %}">
                 {{ comment_form }}
                 {% csrf_token %}
                 <button type="submit">Post</button>
             </form>
+            {% endif %}
             <!-- End Add Comments Form -->
 
         </div>

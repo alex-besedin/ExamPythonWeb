@@ -5,28 +5,31 @@ from django.views import generic
 
 from KetoGo.common.forms import ProductCommentForm
 from KetoGo.core.product_utils import apply_likes_count, apply_product_is_liked_or_not_by_user
-from KetoGo.products.forms import ProductCreateForm, ProductEditForm, ProductDeleteForm
+from KetoGo.products.forms import CreateProductForm, EditProductForm
 from KetoGo.products.models import Product
 
 
 class AddProductView(mixins.LoginRequiredMixin, generic.CreateView):
     # model = Product
     template_name = 'products/add product.html'
-    form_class = ProductCreateForm
+    form_class = CreateProductForm
     success_url = reverse_lazy('menu')
 
 
 class EditProductView(mixins.LoginRequiredMixin, generic.UpdateView):
     model = Product
     template_name = 'products/edit product.html'
-    form_class = ProductEditForm
-    success_url = reverse_lazy('menu')
+    # fields = ('name', 'category', 'product_photo', 'description',)
+    form_class = EditProductForm
+
+    def get_success_url(self):
+        return reverse_lazy('details product', kwargs={'pk': self.object.pk})
 
 
 class DeleteProductView(mixins.LoginRequiredMixin, generic.DeleteView):
     model = Product
     template_name = 'products/delete product.html'
-    form_class = ProductDeleteForm
+    # form_class = DeleteProductForm
     success_url = reverse_lazy('menu')
 
 

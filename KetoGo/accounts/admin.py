@@ -1,5 +1,4 @@
 from django.contrib import admin
-from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.contrib.auth import admin as auth_admin, get_user_model
 
 from KetoGo.accounts.forms import RegisterUserForm, EditUserForm
@@ -35,16 +34,13 @@ class AppUserAdmin(auth_admin.UserAdmin):
             },
         ),
     )
-    list_display = ['email', 'is_staff', 'date_joined', 'last_login',]
+    list_display = ['email', 'is_staff', 'date_joined', 'last_login', ]
     list_filter = ('is_staff', 'is_superuser', 'is_active', 'groups')
     search_fields = ('email',)
     search_help_text = 'Search user by email...'
     ordering = ('email', 'date_joined', 'last_login')
     filter_horizontal = ('groups', 'user_permissions',)
 
-
     # exclude = ('username', 'is_active', 'email', 'password1', 'password2', 'date_joined', 'last_login',)
     form = EditUserForm
     add_form = RegisterUserForm
-
-

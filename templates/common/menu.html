@@ -1,4 +1,4 @@
-{#{% extends 'base/base.html' %}#}
+{% extends 'base/base.html' %}
 {% load static %}
 {% block page_content %}
     <div class="container">
@@ -16,18 +16,21 @@
             </div>
 
         <!-- End Searchbar Form -->
-
+    <div>
             <!-- Start Products List -->
             {% for category in categories %}
                 <p><strong>Choose your {{ category }}:</strong></p>
 
                 {% for product in products %}
                     {% if category == product.category %}
-                        {% include 'base/partials/product item for listing.html' with product=product %}
+                        <p>
+                            {% include 'base/partials/product item for listing.html' with product=product %}
+                        </p>
                     {% endif %}
                 {% endfor %}
 
             {% endfor %}
+    </div>
             <!-- End Products List -->
     </div>
 {% endblock %}

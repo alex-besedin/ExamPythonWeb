@@ -1,7 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 
-from KetoGo.core.model_mixin import StrFromFieldMixin
 from KetoGo.products.models import Product
 
 UserModel = get_user_model()
@@ -39,7 +38,7 @@ class ProductComment(models.Model):
     )
 
     def __str__(self):
-        return f'{self.pk}. Comment to product with id: {self.to_product_id}'
+        return f'Comment for {self.to_product.name} by {self.to_user.get_full_name()}'
 
 
 class ProductLike(models.Model):
@@ -57,4 +56,4 @@ class ProductLike(models.Model):
     )
 
     def __str__(self):
-        return f'{self.pk}. like to product with id: {self.to_product_id}'
+        return f'A like for {self.to_product.name} by {self.to_user.get_full_name()}'

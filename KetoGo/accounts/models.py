@@ -52,7 +52,7 @@ class AppUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
     objects = AppUserManager()
 
     def get_absolute_url(self):
-        return "/accounts/profile/%i/" % (self.pk)
+        return "/accounts/profile/%i/" % self.pk
 
     def get_full_name(self):
         full_name = "%s %s" % (self.first_name, self.last_name)

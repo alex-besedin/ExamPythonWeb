@@ -4,7 +4,7 @@ from django.core.validators import MinLengthValidator
 from django.db import models
 from django.utils.text import slugify
 
-from KetoGo.core.model_mixin import StrFromFieldMixin, ChoicesEnumMixin
+from KetoGo.core.model_mixin import ChoicesEnumMixin
 
 
 class CategoryChoice(ChoicesEnumMixin, Enum):
@@ -14,7 +14,7 @@ class CategoryChoice(ChoicesEnumMixin, Enum):
     dessert = 'Dessert'
 
 
-class Product(StrFromFieldMixin, models.Model):
+class Product(models.Model):
     PRODUCT_NAME_MAX_LENGTH = 30
     MIN_DESCRIPTION_LENGTH = 10
     MAX_DESCRIPTION_LENGTH = 300
@@ -53,3 +53,5 @@ class Product(StrFromFieldMixin, models.Model):
             self.slug = slugify(f'{self.name}-{self.id}')
         return super().save(*args, **kwargs)
 
+    def __str__(self):
+        return f'A {self.category} named {self.name}'

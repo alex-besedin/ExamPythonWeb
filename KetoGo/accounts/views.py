@@ -31,7 +31,7 @@ class LogoutUserView(auth_views.LogoutView):
 
 
 class DetailsUserView(mixins.LoginRequiredMixin, generic.DetailView):
-    template_name = 'accounts/profile-details-page.html'
+    template_name = 'accounts/details profile.html'
     model = UserModel
 
     def get_context_data(self, **kwargs):
@@ -49,7 +49,7 @@ class DetailsUserView(mixins.LoginRequiredMixin, generic.DetailView):
 
 
 class EditUserView(mixins.LoginRequiredMixin, generic.UpdateView):
-    template_name = 'accounts/profile-edit-page.html'
+    template_name = 'accounts/edit profile.html'
     model = UserModel
     # form_class = EditUserForm
     fields = ('first_name', 'last_name', 'avatar', 'age',)
@@ -60,7 +60,7 @@ class EditUserView(mixins.LoginRequiredMixin, generic.UpdateView):
 
 
 class DeleteUserView(mixins.LoginRequiredMixin, generic.DeleteView):
-    template_name = 'accounts/profile-delete-page.html'
+    template_name = 'accounts/delete profile.html'
     model = UserModel
     success_url = reverse_lazy('index')
 
