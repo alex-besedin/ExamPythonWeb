@@ -19,8 +19,6 @@ class Product(models.Model):
     MIN_DESCRIPTION_LENGTH = 10
     MAX_DESCRIPTION_LENGTH = 300
 
-    str_fields = ('id', 'name',)
-
     name = models.CharField(
         max_length=PRODUCT_NAME_MAX_LENGTH,
         blank=False,
@@ -39,6 +37,10 @@ class Product(models.Model):
         validators=(
             MinLengthValidator(MIN_DESCRIPTION_LENGTH),
         )
+    )
+    price = models.DecimalField(
+        max_digits=5,
+        decimal_places=2,
     )
     slug = models.SlugField(
         unique=True,

@@ -6,10 +6,11 @@ from KetoGo.products.models import Product
 class BaseProductForm(forms.ModelForm):
     class Meta:
         model = Product
-        fields = ('name', 'category', 'product_photo', 'description')  # the order should be as we want it to be seen
+        fields = ('name', 'category', 'price', 'product_photo', 'description')  # the order should be as we want it to be seen
         labels = {
             'name': 'Product Name',
             'category': 'Category',
+            'price': 'Product Price',
             'product_photo': 'Link to Image',
             'description': 'Description',
         }
