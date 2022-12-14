@@ -1,9 +1,11 @@
 from django.contrib.auth import mixins, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
+from django.views import generic
 
 from KetoGo.common.forms import SearchProductForm, ProductCommentForm
-from KetoGo.common.models import ProductLike
+from KetoGo.common.models import ProductLike, ProductComment
 from KetoGo.core.product_utils import apply_likes_count, apply_product_is_liked_or_not_by_user
 from KetoGo.products.models import Product
 from django.db.models import Q
@@ -12,7 +14,7 @@ UserModel = get_user_model()
 
 
 def index(request):
-    return render(request, 'common/home-page.html')
+    return render(request, 'common/home page.html')
 
 
 def menu(request):
@@ -94,3 +96,20 @@ def comment_product(request, product_id):
         comment.save()
 
     return redirect('details product', pk=product_id)
+
+
+class EditCommentView(mixins.LoginRequiredMixin, generic.UpdateView):
+    model = ProductComment
+    template_name = 'common/edit comment.html'
+    form_class = ProductCommentForm
+
+    def get_success_url(self):
+        return reverse_lazy('details product', kwargs={'pk': self.object.to_product.pk})
+
+
+class DeleteCommentView(mixins.LoginRequiredMixin, generic.DeleteView):
+    model = ProductComment
+    template_name = 'common/delete comment.html'
+
+    def get_success_url(self):
+        return reverse_lazy('details product', kwargs={'pk': self.object.to_product.pk})

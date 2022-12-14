@@ -20,7 +20,7 @@ class ProductComment(models.Model):
         null=False,
         blank=False,
     )
-    date_and_time_of_publication = models.DateField(
+    date_and_time_of_publication = models.DateTimeField(
         auto_now_add=True,
         null=False,
 
@@ -34,7 +34,7 @@ class ProductComment(models.Model):
 
     to_user = models.ForeignKey(
         UserModel,
-        on_delete=models.RESTRICT,
+        on_delete=models.CASCADE,
     )
 
     def __str__(self):

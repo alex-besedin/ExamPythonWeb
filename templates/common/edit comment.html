@@ -1,0 +1,26 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load custom_filters %}
+{% block page_content %}
+    <!-- Start Edit Product Section -->
+    <div class="edit-delete edit-photo">
+        {% if request.user|is_in_perm_group:"comment moderator" or request.user.is_superuser %}
+            <h2>Edit Comment</h2>
+            <!-- Start Edit Product From -->
+            <form method="post" action="{% url 'edit comment' pk=object.pk %}">
+                {{ form.as_p }}
+                {% csrf_token %}
+                <!-- Edit Product Button -->
+                <button class="edit-btn" type="submit">Edit comment</button>
+            </form>
+            <!-- End Edit Product Form -->
+        {% else %}
+            <strong>You do not have permission to edit comments.</strong>
+            <div class="sure-buttons">
+                <a class="edit-btn" href="javascript:history.back()">Go Back</a>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- End Edit Profile Section -->
+{% endblock %}
