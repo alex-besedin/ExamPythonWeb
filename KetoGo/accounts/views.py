@@ -39,12 +39,13 @@ class DetailsUserView(mixins.LoginRequiredMixin, generic.DetailView):
 
         products = [apply_product_is_liked_or_not_by_user(product, self.object) for product in Product.objects.all()]
         favourites = [product for product in products if product.is_liked_by_user]
+        sorted_favourites = sorted(favourites, key=lambda obj: obj.category)
 
         context['is_owner'] = self.request.user == self.object
         #     # self.object is the selected user by primary key(the owner of the profile viewed)
         #     # self.request.user is the logged user(the viewer that is browsing the profile)
         context['full_name'] = self.object.get_full_name()
-        context['favourites'] = favourites
+        context['favourites'] = sorted_favourites
         return context
 
 
