@@ -13,19 +13,14 @@ class ProductCommentAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {'fields': ('comment_text',)}),
     )
-    add_fieldsets = (
-        (
-            None,
-            {
-                'classes': ('wide',),
-                'fields': ('comment_text', 'to_user', 'get_product', 'date_and_time_of_publication',),
-            },
-        ),)
 
     @admin.display(ordering='to_product__category', description='For Product')
     def get_product(self, obj):
         return obj.to_product.name
 
-    @admin.display(ordering='to_user__date_joined', description='By User')
+    @admin.display(ordering='to_user__first_name', description='Author')
     def get_user_name(self, obj):
         return obj.to_user.get_full_name()
+
+    def has_add_permission(self, request, obj=None):
+        return False
