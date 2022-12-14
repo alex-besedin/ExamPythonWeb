@@ -11,7 +11,7 @@
              class="cover" width="384" height="288">
     </div>
     <div>
-        {{ product.name }}
+        <strong>{{ product.name }}</strong>
             {% if request.user|is_in_perm_group:"product editor" or request.user.is_superuser %}
             <a href="{% url 'edit product' pk=product.pk %}">
                 <img class="edit-img"
@@ -30,6 +30,8 @@
         {% endif %}
     </div>
     <!-- End Product Photo -->
+<div><strong>Price: {{ product.price }}lv.</strong></div>
+
     <div class="bottom">
         <!-- Start Like Button -->
         <div class="actionBtns">

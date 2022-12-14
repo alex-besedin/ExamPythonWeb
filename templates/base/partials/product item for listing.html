@@ -1,4 +1,6 @@
 <div><strong>{{ product.name }}</strong></div>
+<div><strong>Price: {{ product.price }}lv.</strong></div>
+
 <div>
     <!-- Number of Likes for Product -->
     {% with product.productlike_set.count as total_likes %}
