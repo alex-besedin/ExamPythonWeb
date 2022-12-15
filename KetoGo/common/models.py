@@ -38,7 +38,7 @@ class ProductComment(models.Model):
     )
 
     def __str__(self):
-        return f'Comment for {self.to_product.name} by {self.to_user.get_full_name()}'
+        return f'A comment for {self.to_product.name} by {self.to_user.get_full_name()}'
 
 
 class ProductLike(models.Model):

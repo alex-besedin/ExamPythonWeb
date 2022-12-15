@@ -1,10 +1,9 @@
-
 from django.test import TestCase
 
 from KetoGo.accounts.forms import RegisterUserForm
 
 
-class ProfileModelTests(TestCase):
+class RegisterUserFormsTests(TestCase):
     def test_register_user_form__when_valid__expect_form_is_valid(self):
         appuser_data = {
             'email': 'some@email.com',
@@ -16,6 +15,7 @@ class ProfileModelTests(TestCase):
             'age': 20,
         }
         form = RegisterUserForm(appuser_data)
+        # print(form)
 
         self.assertTrue(form.is_valid())
 
@@ -25,7 +25,7 @@ class ProfileModelTests(TestCase):
             'email': 'some@email.com',
             'password1': 'somepassword',
             'password2': 'somepassword',
-            'first_name': 'First5555',
+            'first_name': 'First-5555',
             'last_name': 'Last',
             'avatar': 'https://static01.nyt.com/images/2013/12/02/arts/arts2/arts2-superJumbo.jpg',
             'age': 20,
@@ -39,8 +39,8 @@ class ProfileModelTests(TestCase):
             'email': 'some@email.com',
             'password1': 'somepassword',
             'password2': 'somepassword',
-            'first_name': 'First5555',
-            'last_name': 'Last',
+            'first_name': 'First',
+            'last_name': 'Last-5555',
             'avatar': 'https://static01.nyt.com/images/2013/12/02/arts/arts2/arts2-superJumbo.jpg',
             'age': 20,
         }

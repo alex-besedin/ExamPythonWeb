@@ -11,7 +11,7 @@ class BaseProductForm(forms.ModelForm):
             'name': 'Product Name',
             'category': 'Category',
             'price': 'Product Price',
-            'product_photo': 'Link to Image',
+            'product_photo': 'Upload Image',
             'description': 'Description',
         }
 
@@ -21,5 +21,6 @@ class CreateProductForm(BaseProductForm):
 
 
 class EditProductForm(BaseProductForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    pass
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
