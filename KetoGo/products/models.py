@@ -42,18 +42,6 @@ class Product(models.Model):
         max_digits=5,
         decimal_places=2,
     )
-    slug = models.SlugField(
-        unique=True,
-        blank=True,
-        null=False,
-        editable=False,
-    )
-
-    def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
-        if not self.slug:  # dynamically create unique slug
-            self.slug = slugify(f'{self.name}-{self.id}')
-        return super().save(*args, **kwargs)
 
     def __str__(self):
         return f'A {self.category} named {self.name}'

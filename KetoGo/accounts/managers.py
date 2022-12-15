@@ -24,6 +24,7 @@ class AppUserManager(base_user.BaseUserManager):
             **extra_fields
         )
         user.password = make_password(password)
+        # or:
         # user.set_password(password)
         user.save(using=self._db)
         return user
