@@ -3,7 +3,6 @@
 {% load custom_filters %}
 
 {% block page_content %}
-
     <div class="container">
         <div class="col-9">
             <!-- Start Searchbar Form -->
@@ -12,38 +11,37 @@
                 {% csrf_token %}
                 <button type="submit">
                     <img src="{% static 'images/search.png' %}"
-                         height="18"
+                         height="20"
                          alt="img2">
                 </button>
             </form>
-        </div>
             <!-- End Searchbar Form -->
-
             <!-- ADD PRODUCT button if user has permission -->
-        <div class="sure-buttons">
-            {% if request.user|is_in_perm_group:"product editor" or request.user.is_superuser %}
+            <div class="sure-buttons">
+                {% if request.user|is_in_perm_group:"product editor" or request.user.is_superuser %}
                     <!-- Link to Add Product Page -->
                     <a class="edit-btn" href="{% url 'add product' %}">
-                        <i>Add New Product</i>
+                        <i>Add Product</i>
                     </a>
-            {% endif %}
-        </div>
-        <!-- End ADD PRODUCT button if user has permission -->
-        <div>
-            <!-- Start Products List -->
-            {% for category in categories %}
-                <p><strong>Choose your {{ category }}:</strong></p>
+                {% endif %}
+                <!-- End ADD PRODUCT button if user has permission -->
+            </div>
+            <div>
+                <!-- Start Products List -->
+                {% for category in categories %}
+                    <p><strong>Choose your {{ category }}:</strong></p>
 
-                {% for product in products %}
-                    {% if category == product.category %}
-                        <p>
-                            {% include 'base/partials/product item for listing.html' with product=product %}
-                        </p>
-                    {% endif %}
+                    {% for product in products %}
+                        {% if category == product.category %}
+                            <p>
+                                {% include 'base/partials/product item for listing.html' with product=product %}
+                            </p>
+                        {% endif %}
+                    {% endfor %}
+
                 {% endfor %}
-
-            {% endfor %}
+                <!-- End Products List -->
+            </div>
         </div>
-        <!-- End Products List -->
     </div>
 {% endblock %}

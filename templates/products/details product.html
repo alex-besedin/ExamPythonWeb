@@ -2,42 +2,44 @@
 {% load static %}
 {% load custom_filters %}
 {% block page_content %}
-<div class="card">
-
-    <!-- Start Product Photo -->
-    <div class="imgBx" id="photo-{{ product.pk }}">
-        <img src="/media/{{ product.product_photo }}"
-             alt="photo of {{ product.name }}"
-             class="cover" width="384" height="288">
-    </div>
-    <div>
-        <strong>{{ product.name }}</strong>
+    <div class="card">
+        <!-- Start Product Photo -->
+        <div class="imgBx" id="photo-{{ product.pk }}">
+            <img src="/media/{{ product.product_photo }}"
+                 alt="photo of {{ product.name }}"
+                 class="container" style="width: auto">
+        </div>
+        <!-- End Product Photo -->
+        <!-- Start Product Name with Edit and Delete -->
+        <div>
+            <strong>{{ product.name }}</strong>
             {% if request.user|is_in_perm_group:"product editor" or request.user.is_superuser %}
-            <a href="{% url 'edit product' pk=product.pk %}">
-                <img class="edit-img"
-                     src="{% static 'images/edit-pen-icon-6.jpg' %}"
-                     width="18"
-                     alt="edit">
-            </a>
-
-            <!-- Link to Delete Profile Page -->
-            <a href="{% url 'delete product' pk=product.pk %}">
-                <img class="bin-img"
-                     src="{% static 'images/icon-remove-22.jpg' %}"
-                     width="18"
-                     alt="delete">
-            </a>
-        {% endif %}
-    </div>
-    <!-- End Product Photo -->
-<div><strong>Price: {{ product.price }}lv.</strong></div>
-
-    <div class="bottom">
-        <!-- Start Like Button -->
-        <div class="actionBtns">
-            <div class="left">
-                <!-- Start Like Button -->
-                <span class="heart">
+                <!-- Link to Edit Profile Page -->
+                <a href="{% url 'edit product' pk=product.pk %}">
+                    <img class="edit-img"
+                         src="{% static 'images/edit-pen-icon-6.jpg' %}"
+                         width="18"
+                         alt="edit">
+                </a>
+                <!-- Link to Delete Profile Page -->
+                <a href="{% url 'delete product' pk=product.pk %}">
+                    <img class="bin-img"
+                         src="{% static 'images/icon-remove-22.jpg' %}"
+                         width="18"
+                         alt="delete">
+                </a>
+            {% endif %}
+        </div>
+        <!-- Start Product Name with Edit and Delete -->
+        <!-- Start Product Price -->
+        <div><strong>Price: {{ product.price }}lv.</strong></div>
+        <!-- End Product Price -->
+        <div class="bottom">
+            <!-- Start Like Button -->
+            <div class="actionBtns">
+                <div class="left">
+                    <!-- Start Like Button -->
+                    <span class="heart">
                     <a href="{% url 'like product' product_id=product.pk %}">
                         <!-- if user has liked the product -->
                         {% if product.is_liked_by_user %}
@@ -83,100 +85,97 @@
                         {% endif %}
                     </a>
                 </span>
-            {% if product.is_liked_by_user %}
-                This product is added to your favourites.
-            {% endif %}
-                <!-- End Like Button -->
+                    {% if product.is_liked_by_user %}
+                        Added to your favourites.
+                    {% else %}
+                        Not in your favourites.
+                    {% endif %}
+
+                </div>
             </div>
-        </div>
-
-        <!-- Number of Likes per Photo -->
-
-        {% with product.likes_count as total_likes %}
-            <p class="likes">
-                This {{ product.category }} is liked by {{ total_likes }} user{{ total_likes|pluralize }}
-            </p>
-        {% endwith %}
-        <!-- End Number of Likes per Photo -->
-
-        <!-- start of the description -->
-        <p>Description:</p>
-        {{ product.description }}
-        <!-- end of the description -->
-
-        <!-- Start Comments Section -->
-        {% for comment in comments %}
-            <div class="comments">
-                <div class="top">
-                    <div class="userDetails">
-                        <div class="comment-data">
-                            <div class="profilepic">
-                                <div class="profile_img">
-                                    <div class="image">
-                                        <!-- User Profile Image -->
-                                        {% if comment.to_user.avatar %}
-                                            <img src="{{ comment.to_user.avatar }}" alt="">
-                                        {% else %}
-                                            <img src="{% static 'images/person.png' %}"
-                                                 alt="img8">
-                                        {% endif %}
+            <!-- End Like Button -->
+            <!-- Number of Likes for Product -->
+            {% with product.likes_count as total_likes %}
+                <p class="likes">
+                    This {{ product.category }} is liked by {{ total_likes }} user{{ total_likes|pluralize }}
+                </p>
+            {% endwith %}
+            <!-- End Number of Likes for Product -->
+            <!-- start of the description -->
+            <p><strong>About this product:</strong></p>
+            <div>{{ product.description }}</div>
+            <!-- end of the description -->
+            <!-- Start Comments List Section -->
+            {% for comment in comments %}
+                <div class="comments">
+                    <div class="top">
+                        <div class="userDetails">
+                            <div class="comment-data">
+                                <div class="profilepic">
+                                    <div class="profile_img">
+                                        <div class="image">
+                                            <!-- User Profile Image -->
+                                            {% if comment.to_user.avatar %}
+                                                <img src="{{ comment.to_user.avatar }}" alt="">
+                                            {% else %}
+                                                <img src="{% static 'images/person.png' %}"
+                                                     alt="img8">
+                                            {% endif %}
+                                        </div>
                                     </div>
                                 </div>
+                                <p>
+                                    <!-- Link to User Profile Details Page-->
+                                    <!-- User First and/or Last Name or username-->
+                                    <a href="{% url 'details user' pk=comment.to_user.pk %}">
+                                        {{ comment.to_user.get_full_name }}:
+                                    </a>
+                                    <!-- User Comment -->
+                                    {{ comment.comment_text }}
+                                </p>
                             </div>
-                            <p>
-                                <!-- Link to User Profile Details Page-->
-                                <!-- User First and/or Last Name or username-->
-                                <a href="{% url 'details user' pk=comment.to_user.pk %}">
-                                    {{ comment.to_user.get_full_name }}:
-                                </a>
-                                <!-- User Comment -->
-                                {{ comment.comment_text }}
-                            </p>
-                        </div>
-                        <span>{{ comment.date_and_time_of_publication }}</span>
+                            <span>{{ comment.date_and_time_of_publication }}</span>
                             {% if request.user|is_in_perm_group:"comment moderator" or request.user.is_superuser %}
 
                                 <a href="{% url 'edit comment' pk=comment.pk %}">
-                                <img class="edit-img"
-                                     src="{% static 'images/edit-pen-icon-6.jpg' %}"
-                                     width="18"
-                                     alt="edit">
+                                    <img class="edit-img"
+                                         src="{% static 'images/edit-pen-icon-6.jpg' %}"
+                                         width="18"
+                                         alt="edit">
                                 </a>
 
                                 <!-- Link to Delete Profile Page -->
                                 <a href="{% url 'delete comment' pk=comment.pk %}">
-                                <img class="bin-img"
-                                     src="{% static 'images/icon-remove-22.jpg' %}"
-                                     width="18"
-                                     alt="delete">
+                                    <img class="bin-img"
+                                         src="{% static 'images/icon-remove-22.jpg' %}"
+                                         width="18"
+                                         alt="delete">
                                 </a>
                             {% endif %}
+                        </div>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
-        <!-- End Comments Section -->
+            {% endfor %}
+            <!-- End Comments List Section -->
+            <!-- Start Add Comments Section -->
+            <div class="addComments">
+                <div class="reaction">
+                    <h3>
+                        <i class="far fa-smile"></i>
+                    </h3>
+                </div>
+                <!-- Start Add Comments Form -->
+                {% if request.user.is_authenticated %}
+                    <form method="post" action="{% url 'comment product' product_id=product.pk %}">
+                        {{ comment_form }}
+                        {% csrf_token %}
+                        <button type="submit">Post</button>
+                    </form>
+                {% endif %}
+                <!-- End Add Comments Form -->
 
-        <!-- Start Add Comments Section -->
-        <div class="addComments">
-            <div class="reaction">
-                <h3>
-                    <i class="far fa-smile"></i>
-                </h3>
             </div>
-            <!-- Start Add Comments Form -->
-            {% if request.user.is_authenticated %}
-            <form method="post" action="{% url 'comment product' product_id=product.pk %}">
-                {{ comment_form }}
-                {% csrf_token %}
-                <button type="submit">Post</button>
-            </form>
-            {% endif %}
-            <!-- End Add Comments Form -->
-
+            <!-- End Add Comments Section -->
         </div>
-        <!-- End Add Comments Section -->
-
     </div>
-</div>
 {% endblock %}

@@ -6,7 +6,7 @@ from django.views import generic
 
 from KetoGo.common.forms import SearchProductForm, ProductCommentForm
 from KetoGo.common.models import ProductLike, ProductComment
-from KetoGo.core.product_utils import apply_likes_count, apply_product_is_liked_or_not_by_user
+from KetoGo.core.product_utils import apply_likes_count, apply_product_is_liked_or_not_by_user, sort_by_likes_count
 from KetoGo.products.models import Product
 from django.db.models import Q
 
@@ -14,13 +14,45 @@ UserModel = get_user_model()
 
 
 def index(request):
+    # salad_list = []
+    # sandwich_list = []
+    # chaffle_list = []
+    # dessert_list = []
+    # products = []
+    # for product in Product.objects.all():
+    #     apply_likes_count(product)
+    #     products.append(product)
+    #     if product.category == 'salad':
+    #         salad_list.append(product)
+    #     elif product.category == 'sandwich':
+    #         sandwich_list.append(product)
+    #     elif product.category == 'chaffle':
+    #         chaffle_list.append(product)
+    #     else:
+    #         dessert_list.append(product)
+    #
+    # top_3_salads = sort_by_likes_count(salad_list)[:2]
+    # top_3_sandwiches = sort_by_likes_count(sandwich_list)[:2]
+    # top_3_chaffles = sort_by_likes_count(chaffle_list)[:2]
+    # top_3_desserts = sort_by_likes_count(dessert_list)[:2]
+    #
+    # search_form = SearchProductForm()
+    #
+    # context = {
+    #     'top_3_salads': top_3_salads,
+    #     'top_3_sandwiches': top_3_sandwiches,
+    #     'top_3_chaffles': top_3_chaffles,
+    #     'top_3_desserts': top_3_desserts,
+    #     'search_form': search_form,
+    #     'products': products,
+    # }
+    # return render(request, 'common/home page.html', context)
     return render(request, 'common/home page.html')
 
 
 def menu(request):
-    search_form = SearchProductForm()
     products = Product.objects.all()
-
+    search_form = SearchProductForm()
     context = {
         'search_form': search_form,
         'products': products,

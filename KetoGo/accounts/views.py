@@ -2,7 +2,7 @@ from django.contrib.auth import views as auth_views, login, get_user_model, mixi
 from django.urls import reverse_lazy
 from django.views import generic
 
-from KetoGo.accounts.forms import RegisterUserForm
+from KetoGo.accounts.forms import RegisterUserForm, EditUserForm
 from KetoGo.core.product_utils import apply_product_is_liked_or_not_by_user
 from KetoGo.products.models import Product
 
@@ -52,8 +52,7 @@ class DetailsUserView(mixins.LoginRequiredMixin, generic.DetailView):
 class EditUserView(mixins.LoginRequiredMixin, generic.UpdateView):
     template_name = 'accounts/edit profile.html'
     model = UserModel
-    # form_class = EditUserForm
-    fields = ('first_name', 'last_name', 'avatar', 'age',)
+    form_class = EditUserForm
 
     def get_success_url(self):
         return reverse_lazy('details user', kwargs={'pk': self.object.pk})

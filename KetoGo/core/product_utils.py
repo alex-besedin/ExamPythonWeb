@@ -14,3 +14,7 @@ def apply_product_is_liked_or_not_by_user(product, logged_user):
         product.is_liked_by_user = False
     return product
 
+
+def sort_by_likes_count(list_of_product_objects):
+    sorted_list = sorted(list_of_product_objects, key=lambda obj: obj.likes_count)
+    return sorted_list

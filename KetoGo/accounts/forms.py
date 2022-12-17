@@ -61,8 +61,14 @@ class RegisterUserForm(auth_forms.UserCreationForm):
         fields = (UserModel.USERNAME_FIELD, 'password1', 'password2', 'first_name', 'last_name', 'avatar', 'age',)
 
 
-class EditUserForm(auth_forms.UserChangeForm):
+class EditUserForm(forms.ModelForm):
     class Meta:
         model = UserModel
-        fields = '__all__'
         field_classes = {'username': auth_forms.UsernameField}
+        fields = ('first_name', 'last_name', 'avatar', 'age',)  # the order should be as we want it to be seen
+        labels = {
+            'first_name': 'First Name',
+            'last_name': 'Last Name',
+            'avatar': 'Link to Image',
+            'age': 'Your Age',
+        }

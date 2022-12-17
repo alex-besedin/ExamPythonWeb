@@ -10,7 +10,7 @@ class ProductCommentForm(forms.ModelForm):
         widgets = {
             'comment_text': forms.Textarea(
                 attrs={
-                    'cols': 40,
+                    'cols': 140,
                     'rows': 10,
                     'placeholder': 'Add comment...',
                 },
