@@ -83,7 +83,7 @@ class GetAllUsersCreateUser(rest_views.APIView):
             serializer = UserSerializer(users, many=True)
 
         except ObjectDoesNotExist as ex:
-            return response.Response({"error": "Something is wrong."}, status=status.HTTP_400_BAD_REQUEST)
+            return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         return response.Response({"users": serializer.data})
 
@@ -111,6 +111,9 @@ class GetUpdateDeleteSingleUser(rest_views.APIView):
             return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
         except MultipleObjectsReturned as ex:
+            return response.Response(serializer.errors, status=500)
+
+        except UnboundLocalError as ex:
             return response.Response(serializer.errors, status=500)
 
         return response.Response({"user": serializer.data})
