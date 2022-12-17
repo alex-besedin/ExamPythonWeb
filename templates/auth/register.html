@@ -9,14 +9,25 @@
 
             <!-- Start Register Form -->
             <form method="post" action="{% url 'register user' %}">
-                {{ form.email|placeholder:'Enter your email...' }}
-                {{ form.password1|placeholder:'Choose a password...' }}
-                {{ form.password2|placeholder:'Repeat the password...' }}
-                {{ form.first_name}}
-                {{ form.last_name}}
-                {{ form.avatar}}
-                {{ form.age}}
+                {{ form.email|placeholder:'Enter your email...' }}{{ form.email.errors }}
+                {{ form.password1|placeholder:'Choose a password...' }}{{ form.password1.errors }}
+                {{ form.password2|placeholder:'Repeat the password...' }}{{ form.password2.errors }}
+                {{ form.first_name}}{{ form.first_name.errors }}
+                {{ form.last_name}}{{ form.last_name.errors }}
+                {{ form.avatar}}{{ form.avatar.errors }}
+                {{ form.age}}{{ form.age.errors }}
 
+
+{#                {% for field in form %}#}
+{#                    <p class="error"> {{ field.errors }} </p>#}
+{#                    <div class="label-input">#}
+{#                        <label>{{ field.label }}</label>#}
+{#                        {{ field }}#}
+{#                    </div>#}
+{#                    <br>#}
+{#                {% endfor %}#}
+
+{#                {{ form.as_p }}#}
                 {% csrf_token %}
                 <!-- Register Button -->
                 <button type="submit">Register</button>

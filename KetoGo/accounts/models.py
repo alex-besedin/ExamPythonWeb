@@ -19,6 +19,7 @@ class AppUser(auth_models.AbstractBaseUser, auth_models.PermissionsMixin):
 
     email = models.EmailField(
         unique=True,
+        error_messages={"unique": "Please, try another email.This one is already used."}
     )
     date_joined = models.DateField(
         auto_now_add=True,
