@@ -1,0 +1,17 @@
+{% extends 'base/base.html' %}
+{% block page_content %}
+
+    <div class="not-found">
+        <h1>
+            Sorry, bro...<br> Bad request.
+        </h1>
+
+        <h3>Error 400</h3>
+        <!-- Link to Home Page -->
+        <a href="{% url 'register user' %}">
+            <button>Return to Register</button>
+        </a>
+    </div>
+
+
+{% endblock %}

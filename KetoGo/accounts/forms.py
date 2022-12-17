@@ -1,6 +1,8 @@
 from django import forms
 from django.contrib.auth import forms as auth_forms, get_user_model
 from django.core import validators
+from rest_framework import serializers
+
 from KetoGo.core.validators import name_alphabetic_validator
 
 UserModel = get_user_model()
@@ -72,3 +74,9 @@ class EditUserForm(forms.ModelForm):
             'avatar': 'Link to Image',
             'age': 'Your Age',
         }
+
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserModel
+        fields = '__all__'
