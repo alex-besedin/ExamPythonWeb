@@ -97,7 +97,7 @@
             <!-- Number of Likes for Product -->
             {% with product.likes_count as total_likes %}
                 <p class="likes">
-                    This {{ product.category }} is liked by {{ total_likes }} user{{ total_likes|pluralize }}
+                    {{ total_likes }} user{{ total_likes|pluralize }} have this {{ product.category }} in favourites.
                 </p>
             {% endwith %}
             <!-- End Number of Likes for Product -->
@@ -135,7 +135,7 @@
                                 </p>
                             </div>
                             <span>{{ comment.date_and_time_of_publication }}</span>
-                            {% if request.user|is_in_perm_group:"comment moderator" or request.user.is_superuser %}
+                            {% if request.user|is_in_perm_group:"comment moderator" or request.user.is_superuser or request.user == comment.to_user %}
 
                                 <a href="{% url 'edit comment' pk=comment.pk %}">
                                     <img class="edit-img"

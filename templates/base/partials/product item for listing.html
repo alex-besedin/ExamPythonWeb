@@ -5,8 +5,9 @@
     <div>
         <!-- Number of Likes for Product -->
         {% with product.productlike_set.count as total_likes %}
-            <p class="likes">This {{ product.category }} is a favourite to {{ total_likes }}
-                user{{ total_likes|pluralize }}</p>
+            <p class="likes">
+                {{ total_likes }} user{{ total_likes|pluralize }} have this {{ product.category }} in favourites.
+            </p>
         {% endwith %}
     </div>
     <!-- Start Product Photo -->
