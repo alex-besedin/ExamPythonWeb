@@ -72,69 +72,45 @@ class DeleteUserView(mixins.LoginRequiredMixin, generic.DeleteView):
 
 
 # ****************************************************
-# Error handling + Rest
+# Rest
 # ****************************************************
 
 
 class GetAllUsersCreateUser(rest_views.APIView):
     def get(self, request):
-        try:
-            users = UserModel.objects.all()  # get all users
-            serializer = UserSerializer(users, many=True)
-
-        except ObjectDoesNotExist as ex:
-            return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+        users = UserModel.objects.all()  # get all users
+        serializer = UserSerializer(users, many=True)
         return response.Response({"users": serializer.data})
 
     def post(self, request):  # create user
-        # template = 'home page.html'
-        try:
-            serializer = UserSerializer(data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-        except IntegrityError as ex:
-            # template = '402 user exists.html'
-            return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        # return render(request, template)
-        return response.Response(serializer.data, status=status.HTTP_201_CREATED)
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return response.Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class GetUpdateDeleteSingleUser(rest_views.APIView):
     def get(self, request, pk):  # get the user with pk or other criteria
-        try:
-            # get_object_or_404(UserModel, pk=pk)
-            user = UserModel.objects.get(pk=pk)
-            serializer = UserSerializer(user)
-
-        except ObjectDoesNotExist as ex:
-            return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-        except MultipleObjectsReturned as ex:
-            return response.Response(serializer.errors, status=500)
-
-        except UnboundLocalError as ex:
-            return response.Response(serializer.errors, status=500)
-
+        user = UserModel.objects.get(pk=pk)
+        serializer = UserSerializer(user)
         return response.Response({"user": serializer.data})
 
     def put(self, request, pk):  # edit the user with pk
-        try:
-            user = UserModel.objects.get(pk=pk)
-            serializer = UserSerializer(user, data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-        except ObjectDoesNotExist as ex:
-            return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        return response.Response(serializer.data, status=status.HTTP_200_OK)
+        user = UserModel.objects.get(pk=pk)
+        serializer = UserSerializer(user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return response.Response(serializer.data, status=status.HTTP_200_OK)
+
+        return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk):  # delete the user with pk
-        try:
-            user = UserModel.objects.get(pk=pk)
-            serializer = UserSerializer(user)
-            if user:
-                user.delete()
-            # delete user
-        except ObjectDoesNotExist as ex:
-            return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        return response.Response({"status": "ok"}, status=status.HTTP_200_OK)
+        user = UserModel.objects.get(pk=pk)
+        serializer = UserSerializer(user)
+        if user:
+            user.delete()
+            return response.Response({"status": "ok"}, status=status.HTTP_200_OK)
+
+        return response.Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
